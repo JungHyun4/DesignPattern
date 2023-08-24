@@ -1,3 +1,5 @@
+package Patterns;
+
 /***
  * visitor 패턴은 solid 원칙중 ocp를 지키기 위한 패턴이다.
  * 클래스는 확장에는 열려있고, 수정에는 닫혀있어야 한다는 원칙인데 만약 새로운 기능을 추가하고자 하면 불가피하게 코드를 수정할 수 밖에 없다.
@@ -15,18 +17,55 @@
  *
  */
 
-//
-//
-//public Class VisitorPattern{
-//
-//
-//}
-//
-//
-//public abstract visitor{
-//
-//}
-//
-//public abstract element{
-//
-//}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class VisitorPattern{
+
+    public static void main(String args[]){
+        Bag bag = new Bag();
+
+        bag.item_list.add(new Item("지갑",1));
+        bag.item_list.add(new Item("에어팟",1));
+        bag.item_list.add(new Item("전공책",2));
+
+
+        for (int i=0; i<bag.item_list.size() ; i++){
+            bag.item_list.get(i).accept(bag);
+        }
+    }
+
+
+}
+
+
+interface Visitor{
+    public void visit(Item item);
+}
+
+interface Element{
+    public void accept(Visitor visitor);
+}
+
+class Bag implements Visitor{
+    public List<Item> item_list = new ArrayList<Item>();
+
+    public void visit(Item item){
+            System.out.println("가방속에 "+item.name +" 가(이)  " + item.num + "개 들어있습니다." );
+    }
+}
+
+class Item implements Element{
+    public String name;
+    public int num;
+
+    public Item(String name, int num){
+        this.name = name;
+        this.num = num;
+    }
+
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+}
